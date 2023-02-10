@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "tts-test-roxanne": {
+      "hosting": {
+        "chat_assist_caller": [
+          "caller-agentassist"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "tts-test-roxanne"
+  }
+}

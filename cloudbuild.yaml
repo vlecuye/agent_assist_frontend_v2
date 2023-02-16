@@ -1,33 +1,47 @@
 steps:
-# Substitution for Firebase App.
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: ["-c","sed -i 's/"_FIREBASE_CONFIG_"/$$FIREBASE_CONFIG' -e 's/_SERVICE_URL/$$SERVICE_URL/' /environments/environment.ts"]
-    secretEnv: ['FIREBASE_CONFIG', "SERVICE_URL"]
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - -c
+      - sed -i 's/_FIREBASE_CONFIG_/$$FIREBASE_CONFIG' -e
+        's/_SERVICE_URL/$$SERVICE_URL/' /environments/environment.ts
+    secretEnv:
+      - FIREBASE_CONFIG
+      - SERVICE_URL
   - name: node
     entrypoint: npm
-    args: ['install']
+    args:
+      - install
   - name: node
     entrypoint: npm
-    args: ['run', 'build']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 
-            'northamerica-northeast1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}', '.']
-
-  # Docker push to Google Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'northamerica-northeast1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}']
-
-  # Deploy to Cloud Run
+    args:
+      - run
+      - build
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - northamerica-northeast1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - northamerica-northeast1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}
   - name: google/cloud-sdk
-    args: ['gcloud', 'run', 'deploy', 'svi-frontend', 
-            '--image=northamerica-northeast-1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}', 
-            '--region', 'northamerica-northeast1', '--platform', 'managed', 
-            '--allow-unauthenticated']
+    args:
+      - gcloud
+      - run
+      - deploy
+      - svi-frontend
+      - --image=northamerica-northeast-1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}
+      - --region
+      - northamerica-northeast1
+      - --platform
+      - managed
+      - --allow-unauthenticated
 availableSecrets:
   secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/secret-firebase/versions/latest
-    env: 'FIREBASE_CONFIG'
-  - versionName: projects/$PROJECT_ID/secrets/secret-service-url/versions/latest
-    env: 'SERVICE_URL'
-  
+    - versionName: projects/$PROJECT_ID/secrets/secret-firebase/versions/latest
+      env: FIREBASE_CONFIG
+    - versionName: projects/$PROJECT_ID/secrets/secret-service-url/versions/latest
+      env: SERVICE_URL

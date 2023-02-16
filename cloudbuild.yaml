@@ -1,9 +1,9 @@
 steps:
 # Substitution for Firebase App.
-- name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
-  args: ["-c","sed -i 's/"_FIREBASE_CONFIG_"/$$FIREBASE_CONFIG' -e 's/_SERVICE_URL/$$SERVICE_URL/' /environments/environment.ts"]
-  secretEnv: ['FIREBASE_CONFIG', "SERVICE_URL"]
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ["-c","sed -i 's/"_FIREBASE_CONFIG_"/$$FIREBASE_CONFIG' -e 's/_SERVICE_URL/$$SERVICE_URL/' /environments/environment.ts"]
+    secretEnv: ['FIREBASE_CONFIG', "SERVICE_URL"]
   - name: node
     entrypoint: npm
     args: ['install']

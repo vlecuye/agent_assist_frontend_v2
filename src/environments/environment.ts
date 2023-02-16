@@ -3,16 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  firebase: {
-    projectId: 'tts-test-roxanne',
-    appId: '1:335925609639:web:8e4f5a956e2820a0cec782',
-    storageBucket: 'tts-test-roxanne.appspot.com',
-    apiKey: 'AIzaSyBlJAHFlu9f3GNQE7tR29RB5vU8fsZRdKM',
-    authDomain: 'tts-test-roxanne.firebaseapp.com',
-    messagingSenderId: '335925609639',
-  },
+  firebase: "_FIREBASE_CONFIG_",
   production: false,
-  serviceUri:'http://localhost:8080',
+  serviceUri:'_SERVICE_URL_',
 };
 
 /*

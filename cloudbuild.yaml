@@ -3,7 +3,7 @@ steps:
     entrypoint: bash
     args:
       - -c
-      - sed -i -e 's/_FIREBASE_CONFIG_/$$FIREBASE_CONFIG' -e 's/_SERVICE_URL/$$SERVICE_URL/' ./src/environments/environment.ts
+      - sed -i -e 's/_FIREBASE_CONFIG_/$$FIREBASE_CONFIG/' -e 's/_SERVICE_URL/$$SERVICE_URL/' ./src/environments/environment.ts
     secretEnv:
       - FIREBASE_CONFIG
       - SERVICE_URL

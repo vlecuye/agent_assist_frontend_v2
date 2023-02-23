@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  firebase: "_FIREBASE_CONFIG_",
+  firebase: _FIREBASE_CONFIG_,
   production: false,
   serviceUri:'_SERVICE_URL_',
 };

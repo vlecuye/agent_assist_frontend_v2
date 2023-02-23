@@ -1,12 +1,8 @@
 steps:
   - name: gcr.io/cloud-builders/docker
     entrypoint: bash
-    args:
-      - -c
-      - sed -i -e 's/_FIREBASE_CONFIG_/$$FIREBASE_CONFIG/' -e 's/_SERVICE_URL/$$SERVICE_URL/' ./src/environments/environment.prod.ts
-    secretEnv:
-      - FIREBASE_CONFIG
-      - SERVICE_URL
+    args: ["-c","sed -i -e 's/_FIREBASE_CONFIG_/$$FIREBASE_CONFIG/' -e 's/_SERVICE_URL/$$SERVICE_URL/' ./src/environments/environment.prod.ts"]
+    secretEnv: ['FIREBASE_CONFIG','SERVICE_URL']
   - name: node
     entrypoint: npm
     args:
@@ -41,6 +37,6 @@ steps:
 availableSecrets:
   secretManager:
     - versionName: projects/$PROJECT_ID/secrets/secret-firebase/versions/latest
-      env: FIREBASE_CONFIG
+      env: 'FIREBASE_CONFIG'
     - versionName: projects/$PROJECT_ID/secrets/secret-service-url/versions/latest
-      env: SERVICE_URL
+      env: 'SERVICE_URL'

@@ -32,7 +32,7 @@ steps:
       - run
       - deploy
       - svi-frontend
-      - --image=northamerica-northeast-1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}
+      - --image=northamerica-northeast1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/svi_frontend:${SHORT_SHA}
       - --region
       - northamerica-northeast1
       - --platform

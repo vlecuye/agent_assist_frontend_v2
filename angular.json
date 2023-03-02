@@ -75,7 +75,7 @@
             "development": {
               "browserTarget": "chat_assist_caller:build:development"
             },
-            "options":{
+            "options": {
               "proxyConfig": "src/proxy.conf.json"
             }
           },
@@ -112,8 +112,8 @@
             "prerender": false,
             "ssr": false,
             "browserTarget": "chat_assist_caller:build:production",
-            "firebaseProject": "tts-test-roxanne",
-            "firebaseHostingSite": "caller-agentassist"
+            "firebaseProject": "cloud-lab-1138",
+            "firebaseHostingSite": "cloud-lab-1138"
           }
         }
       }

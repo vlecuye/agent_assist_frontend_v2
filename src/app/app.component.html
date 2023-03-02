@@ -1,5 +1,17 @@
+<mat-toolbar color="primary">
+  <span style="padding-right:16px">Agent Assist Caller</span>
+  <span fxFlex></span>
+  <span *ngIf="!authService.currentUser" fxFlex="nogrow">
+    <button style="height:64px" mat-button (click)="login()">
+      <mat-icon>lock_outline</mat-icon> <span style="padding-left:12px">Login</span>
+    </button>
+  </span>
+  <span *ngIf="authService.currentUser" fxFlex="nogrow">
+    <img style="height:32px;border-radius:50%;vertical-align: middle;" src="{{authService.currentUser.photoURL}}"> 
+  </span>
+</mat-toolbar>
 <mat-divider></mat-divider>
-<div style="flex-direction:column;display:flex;height:100%">
+<div *ngIf="authService.currentUser" style="flex-direction:column;display:flex;height:100%">
   <div style="flex-direction:row;display:flex;padding:0 16px">
 <mat-form-field appearance="outline" style="flex:1;height:6px;margin-top:8px">
   <mat-label>Choose a conversation</mat-label>

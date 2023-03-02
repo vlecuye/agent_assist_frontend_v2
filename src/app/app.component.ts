@@ -2,6 +2,8 @@ import { Component,OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ConversationFirestoreService } from './conversation-firestore.service';
 import {DocumentData} from '@angular/fire/firestore';
+import { AuthService } from './auth.service';
+import { Auth } from '@angular/fire/auth';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,7 +11,7 @@ import {DocumentData} from '@angular/fire/firestore';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private conversationService : ConversationFirestoreService) {}
+  constructor(private conversationService : ConversationFirestoreService, public authService:AuthService) {}
   currentMessage:any;
   currentConversation:any;
   currentParticipant:any;
@@ -40,5 +42,14 @@ export class AppComponent implements OnInit {
       console.log(result);
       this.conversationService.publishMessage(message,result['articles'],this.currentConversation);
   })
+}
+
+login(){
+  this.authService.login();
+  
+}
+
+logout(){
+  this.authService.logout();
 }
 }

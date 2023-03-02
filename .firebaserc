@@ -6,9 +6,16 @@
           "caller-agentassist"
         ]
       }
+    },
+    "cloud-lab-1138": {
+      "hosting": {
+        "chat_assist_caller": [
+          "cloud-lab-1138"
+        ]
+      }
     }
   },
   "projects": {
-    "default": "tts-test-roxanne"
+    "default": "cloud-lab-1138"
   }
 }

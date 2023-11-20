@@ -1,22 +1,14 @@
 <mat-toolbar color="primary">
   <span style="padding-right:16px">Agent Assist Caller</span>
   <span fxFlex></span>
-  <span *ngIf="!authService.currentUser" fxFlex="nogrow">
-    <button style="height:64px" mat-button (click)="login()">
-      <mat-icon>lock_outline</mat-icon> <span style="padding-left:12px">Login</span>
-    </button>
-  </span>
-  <span *ngIf="authService.currentUser" fxFlex="nogrow">
-    <img style="height:32px;border-radius:50%;vertical-align: middle;" src="{{authService.currentUser.photoURL}}"> 
-  </span>
 </mat-toolbar>
 <mat-divider></mat-divider>
-<div *ngIf="authService.currentUser" style="flex-direction:column;display:flex;height:100%">
+<div style="flex-direction:column;display:flex;height:100%">
   <div style="flex-direction:row;display:flex;padding:0 16px">
 <mat-form-field appearance="outline" style="flex:1;height:6px;margin-top:8px">
   <mat-label>Choose a conversation</mat-label>
 <mat-select (selectionChange)="conversationChange($event)" placeholder="Choose a conversation">
-  <mat-option *ngFor="let conversation of conversations$ | async" [value]="conversation['id']">{{conversation['conversationID']}}</mat-option>
+  <mat-option *ngFor="let conversation of conversations" [value]="conversation">{{conversation}}</mat-option>
 </mat-select>
 </mat-form-field>
 <button *ngIf="this.currentConversation" mat-raised-button color="warn" style="margin: 16px 16px 16px 16px" (click)="createConversation()">End conversation</button>
@@ -40,14 +32,14 @@
       <div *ngIf="this.currentParticipant" style="flex-direction:column;height:100%;display:flex;flex: 1 1 100%">
         <h2 style="font-family:'Roboto Condensed'">{{this.currentParticipant.type}}</h2>
         <div style="flex:1 1 100%">
-        <div *ngFor="let message of this.currentConversation.messages">
+        <div *ngFor="let message of this.messages">
           <li *ngIf="message.participant_type=='END_USER'" style="display:flex;flex-direction:column">
             <div style="display:flex;flex-direction:row;justify-content: end;align-items:center;padding:8px">
               <div style="background-color:#eee;padding:8px;margin:8px">{{message.content}}</div>
           <div style="height:32px;width:32px;border-radius:32px;padding:8px;background-color:#ccc;color:#333"><mat-icon style="font-size:32px;height:32px;width:32px">person_outline</mat-icon></div>
         </div>
         <div style="justify-content:end;color:#ccc;display:flex;margin-right:8px">
-          {{message.send_time | date:'shortTime'}}
+          {{message.send_time}}
         </div>
         </li>
         <li *ngIf="message.participant_type=='HUMAN_AGENT'"  style="display:flex;flex-direction:column">
@@ -56,27 +48,29 @@
             <div style="background-color:#3f51b526;padding:8px;margin:8px">{{message.content}}</div>
         </div>
         <div style="justify-content:start;color:#ccc;display:flex;margin-right:8px">
-        {{message.send_time | date:'shortTime'}}
+        {{message.send_time}}
         </div>
         </li>
         </div>
       </div>
       <mat-form-field appearance="outline">
         <input matInput [(ngModel)]="message" placeholder="Write a message here.">
-        <button matSuffix mat-icon-button aria-label="Clear" (click)="analyzeMessage(message)">
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="analyzeMessage(message,'text')">
           <mat-icon>send</mat-icon>
         </button>
+        <button *ngIf="!this.recording"(click)="startRecording()" matSuffix mat-icon-button><mat-icon>mic</mat-icon></button>
+        <button *ngIf="this.recording"(click)="stopRecording()" matSuffix mat-icon-button><mat-icon>stop_circle</mat-icon></button>
       </mat-form-field>
     </div>
   </div>
 <mat-divider [vertical]="true"></mat-divider>
 <div style="flex:50%;padding:16px;display:flex;flex: 1 1 0;flex-direction:column"><h2 style="font-family:'Roboto Condensed'">Articles and FAQs</h2>
-  <div *ngFor="let article of this.currentConversation['articles']" style="display:flex;flex-direction:column;align-items:start;padding:8px">
+  <div *ngFor="let article of this.articles" style="display:flex;flex-direction:column;align-items:start;padding:8px">
     <div style="padding:8px;background-color:#3f51b5;color:#fff;font-size:12px">Article</div>
-    <a href="{{article.uri}}" style="font-size:16px;font-family:'Roboto Condensed';padding-top:8px" >{{article.title}}</a>
+    <a target="_blank" href="{{article.uri}}" style="font-size:16px;font-family:'Roboto Condensed';padding-top:8px" >{{article.title}}</a>
     <span style="font-size:12px;color:#666">{{article.snippet}}</span>
     <div style="justify-content:start;color:#ccc;display:flex;padding-top:8px">
-      {{article.send_time | date:'shortTime'}}
+      {{article.send_time}}
       </div>
   </div>
 </div>

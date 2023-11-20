@@ -38,9 +38,9 @@ import { LoginComponent } from './login/login.component';
     BrowserAnimationsModule,
     HttpClientModule,
     
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth())
+  //  provideFirebaseApp(() => initializeApp(environment.firebase)),
+  //  provideFirestore(() => getFirestore()),
+  //  provideAuth(() => getAuth())
   ],
   providers: [],
   bootstrap: [AppComponent]

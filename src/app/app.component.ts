@@ -1,6 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ConversationFirestoreService } from './conversation-firestore.service';
+import { MediaRecorder,register } from 'extendable-media-recorder';
+import { connect } from 'extendable-media-recorder-wav-encoder';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,16 +21,22 @@ export class AppComponent implements OnInit {
   conversations:any;
   conversationProfiles:any;
   title = 'chat_assist_caller';
-  mediaRecorder:MediaRecorder;
+  mediaRecorder:any;
   articles = new Array();
   options = {
     audioBitsPerSecond: 48000,
-    mimeType: "audio/webm;codecs=opus",
+    mimeType: "audio/wav",
   };
+
+  
   ngOnInit(): void{
     this.conversations = this.conversationService.getConversations();
     this.conversationProfiles = this.conversationService.getConversationProfiles();
+    this.register();
+  }
 
+  async register(){
+    await register(await connect());
   }
   createConversation(){
   this.conversationService.addConversation().subscribe(result => {console.log(result);this.conversations.push(result)});
@@ -52,17 +60,16 @@ export class AppComponent implements OnInit {
       console.log(this.articles)
   })
   }
-  startRecording() {
+  async startRecording() {
+
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       this.recording = true;
       console.log("ACTIVATING AUDIO STREAM");
     this.mediaRecorder = new MediaRecorder(stream,this.options);
     this.mediaRecorder.start();
-    this.mediaRecorder.ondataavailable = (e) => {
-      this.chunks.push(e.data);
+    this.mediaRecorder.ondataavailable = (e:any) => {
       console.log("CHUNKS RECEIVED!")
-      console.log(this.chunks);
-      let blob = this.chunks[0];
+      let blob = e.data;
       this.conversationService.sendAudio(this.currentParticipant['id'],blob,'audio').subscribe(result => {let message = {content:result['text'],participant_type:this.currentParticipant['type'],send_time:result['send_time'],};
       console.log(result);
       this.articles = result['articles'];
